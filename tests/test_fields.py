@@ -415,10 +415,10 @@ class TestBooleanField(FieldValues):
         0: False,
         True: True,
         False: False,
+        'foo': True,
     }
     invalid_inputs = {
-        'foo': ['"foo" is not a valid boolean.'],
-        None: ['This field may not be null.']
+        None: ['This field may not be null.'],
     }
     outputs = {
         'true': True,
@@ -442,13 +442,12 @@ class TestNullBooleanField(FieldValues):
         'true': True,
         'false': False,
         'null': None,
+        'foo': True,
         True: True,
         False: False,
         None: None
     }
-    invalid_inputs = {
-        'foo': ['"foo" is not a valid boolean.'],
-    }
+    invalid_inputs = {}
     outputs = {
         'true': True,
         'false': False,

@@ -504,7 +504,6 @@ class BooleanField(Field):
     }
     default_empty_html = False
     initial = False
-    TRUE_VALUES = set(('t', 'T', 'true', 'True', 'TRUE', '1', 1, True))
     FALSE_VALUES = set(('f', 'F', 'false', 'False', 'FALSE', '0', 0, 0.0, False))
 
     def __init__(self, **kwargs):
@@ -512,16 +511,12 @@ class BooleanField(Field):
         super(BooleanField, self).__init__(**kwargs)
 
     def to_internal_value(self, data):
-        if data in self.TRUE_VALUES:
-            return True
-        elif data in self.FALSE_VALUES:
+        if data in self.FALSE_VALUES:
             return False
-        self.fail('invalid', input=data)
+        return bool(data)
 
     def to_representation(self, value):
-        if value in self.TRUE_VALUES:
-            return True
-        elif value in self.FALSE_VALUES:
+        if value in self.FALSE_VALUES:
             return False
         return bool(value)
 
@@ -531,7 +526,6 @@ class NullBooleanField(Field):
         'invalid': _('"{input}" is not a valid boolean.')
     }
     initial = None
-    TRUE_VALUES = set(('t', 'T', 'true', 'True', 'TRUE', '1', 1, True))
     FALSE_VALUES = set(('f', 'F', 'false', 'False', 'FALSE', '0', 0, 0.0, False))
     NULL_VALUES = set(('n', 'N', 'null', 'Null', 'NULL', '', None))
 
@@ -541,19 +535,15 @@ class NullBooleanField(Field):
         super(NullBooleanField, self).__init__(**kwargs)
 
     def to_internal_value(self, data):
-        if data in self.TRUE_VALUES:
-            return True
-        elif data in self.FALSE_VALUES:
+        if data in self.FALSE_VALUES:
             return False
         elif data in self.NULL_VALUES:
             return None
-        self.fail('invalid', input=data)
+        return bool(data)
 
     def to_representation(self, value):
         if value in self.NULL_VALUES:
             return None
-        if value in self.TRUE_VALUES:
-            return True
         elif value in self.FALSE_VALUES:
             return False
         return bool(value)
